@@ -1,0 +1,51 @@
+edition: 1.0.0
+name: web-framework-app
+access: "undefined"
+
+vars:
+  region: "cn-hangzhou"
+  functionName: "next"
+  service:
+    name: "web-framework"
+    description: 'Serverless Devs Web Framework Service'
+services:
+  framework:
+    component: fc 
+    actions:
+      pre-deploy:
+        - run: ls /usr/local/versions/node
+        - run: export PATH=/usr/local/versions/node/v20.8.1/bin:$PATH && npm install
+        - run: export PATH=/usr/local/versions/node/v20.8.1/bin:$PATH && npm run build
+        - run: cp -r public .next/standalone/public
+        - run: mv static standalone/.next/static
+          path: ./.next
+    props:
+      region: ${vars.region}
+      service: ${vars.service}
+      function:
+        name: ${vars.functionName}
+        description: 'Serverless Devs Web Framework Function'
+        codeUri: './.next/standalone'
+        runtime: custom.debian10
+        timeout: 60
+        caPort: 3000
+        layers:
+          - acs:fc:${vars.region}:official:layers/Nodejs20/versions/1
+        environmentVariables:
+          PATH: /opt/nodejs20/bin:/usr/local/bin/apache-maven/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ruby/bin
+        customRuntimeConfig:
+          command:
+            - node
+            - server.js
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+      customDomains:
+        - domainName: auto
+          protocol: HTTP
+          routeConfigs:
+            - path: '/*'
