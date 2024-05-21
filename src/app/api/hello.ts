@@ -36,7 +36,7 @@ class AESCipher {
   }
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default function async (req: VercelRequest, res: VercelResponse){
   const { body } = req;
   console.log("test")
   console.log("req",req)
