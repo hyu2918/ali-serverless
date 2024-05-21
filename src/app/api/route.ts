@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { NextResponse } from "next/server";
 
 const lark = require("@larksuiteoapi/node-sdk");
 const crypto = require("crypto");
@@ -62,4 +62,16 @@ export async function GET(request: Request) {
   return new Response('Hello, Next.js!', {
     status: 200,
   })
+}
+
+export async function POST(request: Request) {
+  console.log("req",request)
+  const { body } = request;
+  console.log("test")
+  console.log("req.body",body)
+  const cipher = new AESCipher("SD33q5R2ppdsm7qETvyCqhJf2DJJIyAS");
+  const result = JSON.parse(cipher.decrypt(body));
+  console.log(result);
+
+  return NextResponse.json({ "challenge": result["challenge"]});
 }
