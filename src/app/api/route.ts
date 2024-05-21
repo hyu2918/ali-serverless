@@ -36,23 +36,30 @@ class AESCipher {
   }
 }
 
-export default function async (req: VercelRequest, res: VercelResponse){
-  const { body } = req;
-  console.log("test")
-  console.log("req",req)
-  console.log("req.body",body)
-  const encrypt = req.body.encrypt;
-  const cipher = new AESCipher("SD33q5R2ppdsm7qETvyCqhJf2DJJIyAS");
-  const result = JSON.parse(cipher.decrypt(encrypt));
-  // console.log('req.body',req.body)
-  console.log(result);
+// export async function POST (Request){
+//   const { body } = Request;
+//   console.log("test")
+//   console.log("req",Request)
+//   console.log("req.body",body)
+//   const encrypt = req.body.encrypt;
+//   const cipher = new AESCipher("SD33q5R2ppdsm7qETvyCqhJf2DJJIyAS");
+//   const result = JSON.parse(cipher.decrypt(encrypt));
+//   // console.log('req.body',req.body)
+//   console.log(result);
 
-  return res.json({
-    "challenge": result["challenge"],
-  });
+//   return res.json({
+//     "challenge": result["challenge"],
+//   });
 
   // const { name = "World" } = req.query;
   // return res.json({
   //   message: `Hello ${name}!`,
   // });
+// }
+
+export async function GET(request: Request) {
+ 
+  return new Response('Hello, Next.js!', {
+    status: 200,
+  })
 }
