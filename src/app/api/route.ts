@@ -58,6 +58,8 @@ class AESCipher {
 // }
 
 export async function GET(request: Request) {
+
+  process.stdout.write("get")
  
   return new Response('Hello, Next.js!', {
     status: 200,
@@ -65,6 +67,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  process.stdout.write("test")
   console.log("req",request)
   const { body } = request;
   console.log("test")
