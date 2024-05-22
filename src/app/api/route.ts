@@ -67,13 +67,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  process.stdout.write("test")
-  console.log("req",request)
-  const { body } = request;
-  console.log("test")
-  console.log("req.body",body)
+  process.stdout.write("test\n")
+  const res = await request.json()
+  console.log("res",res)
+  const encrypt = res['encrypt']
   const cipher = new AESCipher("SD33q5R2ppdsm7qETvyCqhJf2DJJIyAS");
-  const result = JSON.parse(cipher.decrypt(body));
+  const result = JSON.parse(cipher.decrypt(encrypt));
   console.log(result);
 
   return NextResponse.json({ "challenge": result["challenge"]});
